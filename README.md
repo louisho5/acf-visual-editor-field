@@ -1,10 +1,40 @@
-# Overview
+# ACF Visual Editor Field
 
-ACF GrapesJS Field A custom Advanced Custom Fields (ACF) field type that integrates the GrapesJS visual editor. Use it to build and edit content visually with drag-and-drop components, and store the resulting HTML/CSS in your post meta.
+A custom ACF field type that provides a drag-and-drop visual editor.
 
-# Example
+## Features
 
-## Fetch API data
+- Drag & drop visual editor powered by GrapesJS
+
+## Installation
+
+1. Upload the `acf-visual-editor-field` folder to `/wp-content/plugins/`
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Make sure ACF (Advanced Custom Fields) is installed and activated
+
+## Usage
+
+### Creating a Visual Editor Field
+
+1. Go to **ACF → Field Groups**
+2. Create or edit a field group
+3. Add a new field and select **"Visual Editor"** as the field type
+4. Set the editor height (default: 680px)
+5. Assign the field group to your desired post type
+
+### PHP Example
+
+```php
+<?php
+
+$content = get_field('visual_editor_source');
+
+if ($content) {
+    echo $content;
+}
+```
+
+### REST API Example (JavaScript)
 
 ```js
 const SITE_URL = "http://localhost:3000"
@@ -29,5 +59,5 @@ async function fetchVisualEditorData(postId) {
 }
 
 // Example usage
-fetchVisualEditorData(40); // Enter your Post ID
+fetchVisualEditorData(123); // Enter your Post ID
 ```
