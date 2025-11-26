@@ -1,10 +1,10 @@
 # ACF Visual Editor Field
 
-A custom ACF field type that provides a drag-and-drop visual editor.
+A custom [ACF](https://github.com/AdvancedCustomFields/acf) field type that provides a drag-and-drop visual editor inside your WordPress.
 
 ## Features
 
-- Drag & drop visual editor powered by GrapesJS
+- Drag & drop visual editor powered by [GrapesJS](https://github.com/GrapesJS/grapesjs)
 
 ## Installation
 
@@ -61,4 +61,5 @@ async function fetchVisualEditorData(postId) {
 // Example usage
 fetchVisualEditorData(123); // Enter your Post ID
 ```
+
 
