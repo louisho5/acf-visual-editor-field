@@ -19,7 +19,7 @@ A custom ACF field type that provides a drag-and-drop visual editor.
 1. Go to **ACF → Field Groups**
 2. Create or edit a field group
 3. Add a new field and select **"Visual Editor"** as the field type
-4. Set the editor height (default: 680px)
+4. Set the editor height (optional)
 5. Assign the field group to your desired post type
 
 ### PHP Example
@@ -61,3 +61,4 @@ async function fetchVisualEditorData(postId) {
 // Example usage
 fetchVisualEditorData(123); // Enter your Post ID
 ```
+
