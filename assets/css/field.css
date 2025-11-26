@@ -1,0 +1,361 @@
+/**
+ * Styles for the Visual Editor ACF field type using GrapesJS.
+ */
+
+/* Main wrapper */
+.acf-field-visual-editor .acf-grapesjs-wrap {
+	width: 100%;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #3d3d3d;
+}
+
+/* Toolbar */
+.acf-field-visual-editor .gjs-toolbar {
+	display: flex;
+	align-items: center;
+	/* padding: 8px 12px; */
+	background: #2d2d2d;
+	border-bottom: 1px solid #1d1d1d;
+	gap: 4px;
+	flex-wrap: wrap;
+}
+
+.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn {
+	padding: 6px 10px;
+	background: transparent;
+	border: none;
+	color: #ccc;
+	cursor: pointer;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn:hover {
+	background: #4d4d4d;
+}
+
+.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn.gjs-pn-active {
+	background: #2271b1;
+	color: #fff;
+}
+
+.acf-field-visual-editor .gjs-toolbar-separator {
+	width: 1px;
+	height: 24px;
+	background: #555;
+	margin: 0 8px;
+}
+
+/* Main editor row */
+.acf-field-visual-editor .gjs-editor-row {
+	display: flex;
+	min-height: 500px;
+}
+
+/* Sidebars */
+.acf-field-visual-editor .gjs-sidebar {
+	width: 220px;
+	background: #3d3d3d;
+	border-right: 1px solid #2d2d2d;
+	display: flex;
+	flex-direction: column;
+}
+
+.acf-field-visual-editor .gjs-sidebar-right {
+	border-right: none;
+	border-left: 1px solid #2d2d2d;
+}
+
+.acf-field-visual-editor .gjs-sidebar-header {
+	padding: 12px 15px;
+	background: #2d2d2d;
+	color: #fff;
+	font-weight: 600;
+	font-size: 13px;
+	border-bottom: 1px solid #1d1d1d;
+}
+
+.acf-field-visual-editor .gjs-sidebar-content {
+	flex: 1;
+	overflow-y: auto;
+}
+
+/* Tabs */
+.acf-field-visual-editor .gjs-tabs {
+	display: flex;
+	background: #2d2d2d;
+	border-bottom: 1px solid #1d1d1d;
+}
+
+.acf-field-visual-editor .gjs-tab-btn {
+	flex: 1;
+	padding: 10px 8px;
+	background: transparent;
+	border: none;
+	color: #aaa;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 500;
+	border-bottom: 2px solid transparent;
+}
+
+.acf-field-visual-editor .gjs-tab-btn:hover {
+	color: #fff;
+	background: #4d4d4d;
+}
+
+.acf-field-visual-editor .gjs-tab-btn.active {
+	color: #fff;
+	border-bottom-color: #2271b1;
+}
+
+/* Canvas - main editor area */
+.acf-field-visual-editor .gjs-editor {
+	flex: 1;
+	background: #f0f0f1;
+	position: relative;
+}
+
+/* GrapesJS overrides */
+.acf-field-visual-editor .gjs-one-bg {
+	background-color: #3d3d3d;
+}
+
+.acf-field-visual-editor .gjs-two-color {
+	color: #ddd;
+}
+
+.acf-field-visual-editor .gjs-three-bg {
+	background-color: #4d4d4d;
+}
+
+.acf-field-visual-editor .gjs-four-color,
+.acf-field-visual-editor .gjs-four-color-h:hover {
+	color: #2271b1;
+}
+
+/* Block manager in sidebar - default for non-categorized blocks */
+.acf-field-visual-editor .gjs-blocks-c {
+	padding: 8px;
+}
+
+.acf-field-visual-editor .gjs-block {
+	width: 100% !important;
+	min-height: 55px !important;
+	margin: 0 !important;
+	background: #4d4d4d;
+	border: 1px solid #5d5d5d;
+	border-radius: 4px;
+	color: #ddd;
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 6px 4px;
+	cursor: grab;
+	transition: all 0.15s;
+}
+
+.acf-field-visual-editor .gjs-block:hover {
+	border-color: #2271b1;
+	background: #555;
+}
+
+.acf-field-visual-editor .gjs-block svg {
+	width: 24px;
+	height: 24px;
+	color: #aaa;
+	margin-bottom: 4px;
+}
+
+.acf-field-visual-editor .gjs-block:hover svg {
+	color: #2271b1;
+}
+
+.acf-field-visual-editor .gjs-block-label {
+	font-size: 10px;
+	text-align: center;
+	line-height: 1.2;
+}
+
+/* Block categories */
+.acf-field-visual-editor .gjs-block-category {
+	width: 100%;
+	margin-bottom: 2px;
+}
+
+.acf-field-visual-editor .gjs-block-category .gjs-title {
+	padding: 10px 12px;
+	background: #2d2d2d;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	border-bottom: 1px solid #1d1d1d;
+}
+
+.acf-field-visual-editor .gjs-block-category .gjs-title:hover {
+	background: #3d3d3d;
+}
+
+/* Collapsed state - hide blocks */
+.acf-field-visual-editor .gjs-block-category:not(.gjs-open) .gjs-blocks-c {
+	display: none !important;
+}
+
+/* Open state - show blocks in grid */
+.acf-field-visual-editor .gjs-block-category.gjs-open .gjs-blocks-c {
+	padding: 8px !important;
+	display: grid !important;
+	grid-template-columns: repeat(2, 1fr) !important;
+	gap: 6px !important;
+}
+
+/* Canvas styling */
+.acf-field-visual-editor .gjs-cv-canvas {
+	width: 100%;
+	height: 100%;
+	top: 0;
+}
+
+.acf-field-visual-editor .gjs-frame-wrapper {
+	background: #fff;
+}
+
+/* Selected element highlight */
+.acf-field-visual-editor .gjs-selected {
+	outline: 2px solid #2271b1 !important;
+}
+
+.acf-field-visual-editor .gjs-hovered {
+	outline: 1px dashed #2271b1 !important;
+}
+
+/* Layer manager */
+.acf-field-visual-editor .gjs-layers {
+	padding: 5px;
+}
+
+.acf-field-visual-editor .gjs-layer {
+	background: #4d4d4d;
+	color: #ddd;
+	margin-bottom: 2px;
+	border-radius: 3px;
+}
+
+.acf-field-visual-editor .gjs-layer:hover {
+	background: #555;
+}
+
+.acf-field-visual-editor .gjs-layer-title {
+	padding: 8px 10px;
+}
+
+/* Style manager */
+.acf-field-visual-editor .gjs-sm-sectors {
+	background: transparent;
+}
+
+.acf-field-visual-editor .gjs-sm-sector {
+	margin-bottom: 5px;
+}
+
+.acf-field-visual-editor .gjs-sm-sector-title {
+	padding: 10px 12px;
+	background: #2d2d2d;
+	color: #fff;
+	font-size: 12px;
+	border: none;
+}
+
+.acf-field-visual-editor .gjs-sm-properties {
+	padding: 10px;
+	background: #4d4d4d;
+}
+
+.acf-field-visual-editor .gjs-sm-property {
+	margin-bottom: 8px;
+}
+
+.acf-field-visual-editor .gjs-sm-label {
+	color: #ccc;
+	font-size: 11px;
+	margin-bottom: 4px;
+}
+
+.acf-field-visual-editor .gjs-field {
+	background: #5d5d5d;
+	color: #fff;
+	border: 1px solid #6d6d6d;
+	border-radius: 3px;
+}
+
+.acf-field-visual-editor .gjs-field input {
+	color: #fff;
+}
+
+/* Selector manager */
+.acf-field-visual-editor .gjs-clm-tags {
+	padding: 10px;
+	background: #4d4d4d;
+}
+
+.acf-field-visual-editor .gjs-clm-tag {
+	background: #2271b1;
+	color: #fff;
+	border-radius: 3px;
+	padding: 4px 8px;
+	margin: 2px;
+	font-size: 11px;
+}
+
+/* Trait manager */
+.acf-field-visual-editor .gjs-trt-traits {
+	padding: 10px;
+}
+
+.acf-field-visual-editor .gjs-trt-trait {
+	margin-bottom: 10px;
+}
+
+.acf-field-visual-editor .gjs-label-wrp {
+	color: #ccc;
+	font-size: 11px;
+	margin-bottom: 4px;
+}
+
+/* Scrollbars */
+.acf-field-visual-editor .gjs-sidebar-content::-webkit-scrollbar {
+	width: 6px;
+}
+
+.acf-field-visual-editor .gjs-sidebar-content::-webkit-scrollbar-track {
+	background: #3d3d3d;
+}
+
+.acf-field-visual-editor .gjs-sidebar-content::-webkit-scrollbar-thumb {
+	background: #666;
+	border-radius: 3px;
+}
+
+.acf-field-visual-editor .gjs-sidebar-content::-webkit-scrollbar-thumb:hover {
+	background: #888;
+}
+
+/* Hide default GrapesJS panels - we use our own toolbar */
+.acf-field-visual-editor .gjs-pn-panels,
+.acf-field-visual-editor .gjs-pn-panel,
+.acf-field-visual-editor .gjs-pn-panel-top {
+	display: none !important;
+}
+
+/* Component toolbar */
+.acf-field-visual-editor .gjs-toolbar {
+	background: #2d2d2d;
+}
+
+.acf-field-visual-editor .gjs-toolbar-item {
+	color: #fff;
+}
