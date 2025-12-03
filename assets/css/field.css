@@ -11,32 +11,40 @@
 	background: #3d3d3d;
 }
 
-/* Toolbar */
-.acf-field-visual-editor .gjs-toolbar {
+/* Custom Toolbar */
+.acf-field-visual-editor .gjs-custom-toolbar {
 	display: flex;
 	align-items: center;
-	/* padding: 8px 12px; */
+	padding: 8px 12px;
 	background: #2d2d2d;
 	border-bottom: 1px solid #1d1d1d;
 	gap: 4px;
 	flex-wrap: wrap;
 }
 
-.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn {
-	padding: 6px 10px;
+.acf-field-visual-editor .gjs-toolbar-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px 10px;
 	background: transparent;
 	border: none;
-	color: #ccc;
+	color: #999;
 	cursor: pointer;
 	border-radius: 4px;
-	font-size: 14px;
+	transition: all 0.15s;
 }
 
-.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn:hover {
+.acf-field-visual-editor .gjs-toolbar-btn svg {
+	display: block;
+}
+
+.acf-field-visual-editor .gjs-toolbar-btn:hover {
 	background: #4d4d4d;
+	color: #fff;
 }
 
-.acf-field-visual-editor .gjs-toolbar .gjs-pn-btn.gjs-pn-active {
+.acf-field-visual-editor .gjs-toolbar-btn.active {
 	background: #2271b1;
 	color: #fff;
 }
@@ -46,6 +54,19 @@
 	height: 24px;
 	background: #555;
 	margin: 0 8px;
+}
+
+.acf-field-visual-editor .gjs-toolbar-spacer {
+	flex: 1;
+}
+
+.acf-field-visual-editor .gjs-device-info {
+	color: #888;
+	font-size: 12px;
+	padding: 4px 10px;
+	background: #1d1d1d;
+	border-radius: 4px;
+	margin-right: 8px;
 }
 
 /* Main editor row */
@@ -311,6 +332,43 @@
 	font-size: 11px;
 }
 
+/* Custom CSS section */
+.acf-field-visual-editor .gjs-custom-css-section {
+	border-top: 1px solid #2d2d2d;
+	margin-top: 10px;
+}
+
+.acf-field-visual-editor .gjs-custom-css-header {
+	padding: 10px 12px;
+	background: #2d2d2d;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.acf-field-visual-editor .gjs-custom-css-textarea {
+	width: 100%;
+	min-height: 150px;
+	padding: 10px;
+	background: #1e1e1e;
+	color: #9cdcfe;
+	border: none;
+	font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+	font-size: 12px;
+	line-height: 1.5;
+	resize: vertical;
+	box-sizing: border-box;
+}
+
+.acf-field-visual-editor .gjs-custom-css-textarea:focus {
+	outline: none;
+	background: #252526;
+}
+
+.acf-field-visual-editor .gjs-custom-css-textarea::placeholder {
+	color: #6a6a6a;
+}
+
 /* Trait manager */
 .acf-field-visual-editor .gjs-trt-traits {
 	padding: 10px;
@@ -351,11 +409,38 @@
 	display: none !important;
 }
 
-/* Component toolbar */
+/* GrapesJS component toolbar (hover toolbar on elements) */
 .acf-field-visual-editor .gjs-toolbar {
-	background: #2d2d2d;
+	background: #2d2d2d !important;
+	border-radius: 4px;
 }
 
 .acf-field-visual-editor .gjs-toolbar-item {
 	color: #fff;
+}
+
+.acf-field-visual-editor .gjs-toolbar-items {
+	display: flex;
+}
+
+/* Fullscreen mode for entire editor */
+body.gjs-editor-fullscreen {
+	overflow: hidden !important;
+}
+
+.acf-grapesjs-wrap.gjs-fullscreen-mode {
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	z-index: 99999 !important;
+	border-radius: 0 !important;
+	border: none !important;
+}
+
+.acf-grapesjs-wrap.gjs-fullscreen-mode .gjs-editor-row {
+	height: calc(100vh - 50px) !important;
 }

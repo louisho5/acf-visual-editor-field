@@ -25,12 +25,15 @@
 		var initialHtml = '';
 		var initialCss = '';
 		
+		var initialCustomCss = '';
+		
 		// Try to parse as JSON first (new format)
 		try {
 			var parsed = JSON.parse(rawContent);
 			if (parsed.html !== undefined) {
 				initialHtml = parsed.html || '';
 				initialCss = parsed.css || '';
+				initialCustomCss = parsed.customCss || '';
 			}
 		} catch(e) {
 			// Not JSON, try to extract style tags (legacy format)
@@ -45,6 +48,10 @@
 				initialHtml = rawContent;
 			}
 		}
+		
+		// Custom CSS textarea
+		var $customCssTextarea = $wrap.find('.gjs-custom-css-textarea');
+		$customCssTextarea.val(initialCustomCss);
 
 		// Initialize GrapesJS
 		var editor = grapesjs.init({
@@ -219,19 +226,134 @@
 				appendTo: '#' + editorId + '-styles',
 				sectors: [
 					{
+						name: 'Layout',
+						open: false,
+						properties: [
+							{
+								name: 'Display',
+								property: 'display',
+								type: 'select',
+								defaults: 'block',
+								options: [
+									{ id: 'block', label: 'Block' },
+									{ id: 'inline-block', label: 'Inline Block' },
+									{ id: 'flex', label: 'Flex' },
+									{ id: 'grid', label: 'Grid' },
+									{ id: 'none', label: 'None' }
+								]
+							},
+							{
+								name: 'Position',
+								property: 'position',
+								type: 'select',
+								defaults: 'static',
+								options: [
+									{ id: 'static', label: 'Static' },
+									{ id: 'relative', label: 'Relative' },
+									{ id: 'absolute', label: 'Absolute' },
+									{ id: 'fixed', label: 'Fixed' }
+								]
+							}
+						]
+					},
+					{
+						name: 'Flex',
+						open: false,
+						properties: [
+							{
+								name: 'Direction',
+								property: 'flex-direction',
+								type: 'select',
+								defaults: 'row',
+								options: [
+									{ id: 'row', label: 'Row' },
+									{ id: 'row-reverse', label: 'Row Reverse' },
+									{ id: 'column', label: 'Column' },
+									{ id: 'column-reverse', label: 'Column Reverse' }
+								]
+							},
+							{
+								name: 'Wrap',
+								property: 'flex-wrap',
+								type: 'select',
+								defaults: 'nowrap',
+								options: [
+									{ id: 'nowrap', label: 'No Wrap' },
+									{ id: 'wrap', label: 'Wrap' },
+									{ id: 'wrap-reverse', label: 'Wrap Reverse' }
+								]
+							},
+							{
+								name: 'Justify',
+								property: 'justify-content',
+								type: 'select',
+								defaults: 'flex-start',
+								options: [
+									{ id: 'flex-start', label: 'Start' },
+									{ id: 'flex-end', label: 'End' },
+									{ id: 'center', label: 'Center' },
+									{ id: 'space-between', label: 'Space Between' },
+									{ id: 'space-around', label: 'Space Around' },
+									{ id: 'space-evenly', label: 'Space Evenly' }
+								]
+							},
+							{
+								name: 'Align Items',
+								property: 'align-items',
+								type: 'select',
+								defaults: 'stretch',
+								options: [
+									{ id: 'flex-start', label: 'Start' },
+									{ id: 'flex-end', label: 'End' },
+									{ id: 'center', label: 'Center' },
+									{ id: 'stretch', label: 'Stretch' },
+									{ id: 'baseline', label: 'Baseline' }
+								]
+							},
+							{
+								name: 'Gap',
+								property: 'gap',
+								type: 'integer',
+								units: ['px', 'em', 'rem', '%'],
+								defaults: '0'
+							},
+							{
+								name: 'Flex Grow',
+								property: 'flex-grow',
+								type: 'integer',
+								defaults: '0',
+								min: 0
+							},
+							{
+								name: 'Flex Shrink',
+								property: 'flex-shrink',
+								type: 'integer',
+								defaults: '1',
+								min: 0
+							},
+							{
+								name: 'Flex Basis',
+								property: 'flex-basis',
+								type: 'integer',
+								units: ['px', '%', 'auto'],
+								defaults: 'auto'
+							}
+						]
+					},
+					{
 						name: 'Dimension',
 						open: false,
-						buildProps: ['width', 'height', 'max-width', 'min-height', 'margin', 'padding']
+						buildProps: ['width', 'height', 'max-width', 'min-width', 'min-height', 'margin', 'padding']
 					},
 					{
 						name: 'Typography',
 						open: false,
-						buildProps: ['font-family', 'font-size', 'font-weight', 'color', 'line-height', 'text-align']
+						buildProps: ['font-family', 'font-size', 'font-weight', 'color', 'line-height', 'text-align', 'text-transform']
 					},
 					{
 						name: 'Decorations',
 						open: false,
-						buildProps: ['background-color', 'border-radius', 'border', 'box-shadow']
+						buildProps: ['background-color', 'background', 'border-radius', 'border', 'box-shadow', 'opacity']
 					}
 				]
 			},
@@ -244,106 +366,107 @@
 			deviceManager: {
 				devices: [
 					{ name: 'Desktop', width: '' },
-					{ name: 'Tablet', width: '768px' },
-					{ name: 'Mobile', width: '320px' }
+					{ name: 'Tablet Landscape', width: '1199px', widthMedia: '1199px' },
+					{ name: 'Tablet', width: '991px', widthMedia: '991px' },
+					{ name: 'Mobile', width: '767px', widthMedia: '767px' }
 				]
 			}
 		});
 
-		// Add panels for toolbar
-		editor.Panels.addPanel({
-			id: 'panel-top',
-			el: '#' + editorId + '-toolbar'
+		// Custom toolbar buttons
+		var $toolbar = $wrap.find('.gjs-custom-toolbar');
+		var $deviceInfo = $toolbar.find('.gjs-device-info');
+		
+		// Device buttons
+		$toolbar.find('[data-device]').on('click', function(e) {
+			e.preventDefault();
+			var device = $(this).data('device');
+			editor.setDevice(device);
+			$toolbar.find('[data-device]').removeClass('active');
+			$(this).addClass('active');
+			$deviceInfo.text(device);
 		});
-
-		editor.Panels.addButton('panel-top', [
-			{
-				id: 'device-desktop',
-				className: 'gjs-pn-btn',
-				label: '🖥️',
-				command: 'set-device-desktop',
-				active: true,
-				togglable: false,
-				attributes: { title: 'Desktop' }
-			},
-			{
-				id: 'device-tablet',
-				className: 'gjs-pn-btn',
-				label: '📱',
-				command: 'set-device-tablet',
-				togglable: false,
-				attributes: { title: 'Tablet' }
-			},
-			{
-				id: 'device-mobile',
-				className: 'gjs-pn-btn',
-				label: '📲',
-				command: 'set-device-mobile',
-				togglable: false,
-				attributes: { title: 'Mobile' }
-			},
-			{
-				id: 'separator1',
-				className: 'gjs-toolbar-separator'
-			},
-			{
-				id: 'visibility',
-				className: 'gjs-pn-btn',
-				label: '⬜',
-				command: 'sw-visibility',
-				active: true,
-				attributes: { title: 'Toggle Borders' }
-			},
-			{
-				id: 'fullscreen',
-				className: 'gjs-pn-btn',
-				label: '⛶',
-				command: 'fullscreen',
-				attributes: { title: 'Fullscreen' }
-			},
-			{
-				id: 'preview',
-				className: 'gjs-pn-btn',
-				label: '👁️',
-				command: 'preview',
-				attributes: { title: 'Preview' }
-			},
-			{
-				id: 'separator2',
-				className: 'gjs-toolbar-separator'
-			},
-			{
-				id: 'undo',
-				className: 'gjs-pn-btn',
-				label: '↩️',
-				command: 'core:undo',
-				attributes: { title: 'Undo' }
-			},
-			{
-				id: 'redo',
-				className: 'gjs-pn-btn',
-				label: '↪️',
-				command: 'core:redo',
-				attributes: { title: 'Redo' }
-			},
-			{
-				id: 'canvas-clear',
-				className: 'gjs-pn-btn',
-				label: '🗑️',
-				command: 'core:canvas-clear',
-				attributes: { title: 'Clear Canvas' }
+		
+		// Custom fullscreen for entire editor
+		var isFullscreen = false;
+		function toggleFullscreen() {
+			isFullscreen = !isFullscreen;
+			if (isFullscreen) {
+				$wrap.addClass('gjs-fullscreen-mode');
+				$('body').addClass('gjs-editor-fullscreen');
+			} else {
+				$wrap.removeClass('gjs-fullscreen-mode');
+				$('body').removeClass('gjs-editor-fullscreen');
 			}
-		]);
-
-		// Device commands
-		editor.Commands.add('set-device-desktop', {
-			run: function(ed) { ed.setDevice('Desktop'); }
+		}
+		
+		// ESC key to exit fullscreen
+		$(document).on('keydown', function(e) {
+			if (e.key === 'Escape' && isFullscreen) {
+				toggleFullscreen();
+				$toolbar.find('[data-cmd="fullscreen"]').removeClass('active');
+			}
 		});
-		editor.Commands.add('set-device-tablet', {
-			run: function(ed) { ed.setDevice('Tablet'); }
+		
+		// Command buttons
+		$toolbar.find('[data-cmd]').on('click', function(e) {
+			e.preventDefault();
+			var cmd = $(this).data('cmd');
+			
+			// Custom fullscreen for entire editor
+			if (cmd === 'fullscreen') {
+				toggleFullscreen();
+				$(this).toggleClass('active', isFullscreen);
+				return;
+			}
+			
+			// Toggle commands
+			if (cmd === 'sw-visibility') {
+				var isActive = $(this).hasClass('active');
+				if (isActive) {
+					editor.stopCommand(cmd);
+					$(this).removeClass('active');
+				} else {
+					editor.runCommand(cmd);
+					$(this).addClass('active');
+				}
+			} else {
+				// One-time commands
+				editor.runCommand(cmd);
+			}
 		});
-		editor.Commands.add('set-device-mobile', {
-			run: function(ed) { ed.setDevice('Mobile'); }
+		
+		// Update device info when device changes
+		editor.on('change:device', function() {
+			var device = editor.getDevice();
+			$deviceInfo.text(device);
+			$toolbar.find('[data-device]').removeClass('active');
+			$toolbar.find('[data-device="' + device + '"]').addClass('active');
+		});
+		
+		// Run visibility command on load
+		editor.on('load', function() {
+			editor.runCommand('sw-visibility');
+		});
+		
+		// Prevent Enter key from submitting WordPress form, but let GrapesJS handle it
+		$wrap.on('keypress keydown keyup', 'input:not([type="submit"]), select', function(e) {
+			if (e.key === 'Enter' || e.keyCode === 13) {
+				e.stopPropagation();				
+				// Prevent form submission on keypress
+				if (e.type === 'keypress') {
+					e.preventDefault();
+					return false;
+				}
+			}
+		});
+		
+		// Also prevent form submission if Enter pressed in editor area
+		$wrap.closest('form').on('keypress', function(e) {
+			if ((e.key === 'Enter' || e.keyCode === 13) && $(e.target).closest('.acf-grapesjs-wrap').length) {
+				e.preventDefault();
+				return false;
+			}
 		});
 
 		// Tab switching
@@ -362,13 +485,44 @@
 		function syncContent() {
 			var html = editor.getHtml();
 			var css = editor.getCss();
-			// Save as JSON to properly preserve HTML and CSS separately
+			var customCss = $customCssTextarea.val() || '';
+			// Save as JSON to properly preserve HTML, CSS, and custom CSS separately
 			var data = JSON.stringify({
 				html: html,
-				css: css
+				css: css,
+				customCss: customCss
 			});
 			$storage.val(data);
 		}
+		
+		// Apply custom CSS to canvas
+		function applyCustomCss() {
+			var customCss = $customCssTextarea.val() || '';
+			var canvasDoc = editor.Canvas.getDocument();
+			if (canvasDoc) {
+				var styleId = 'gjs-custom-css';
+				var existingStyle = canvasDoc.getElementById(styleId);
+				if (existingStyle) {
+					existingStyle.innerHTML = customCss;
+				} else {
+					var styleEl = canvasDoc.createElement('style');
+					styleEl.id = styleId;
+					styleEl.innerHTML = customCss;
+					canvasDoc.head.appendChild(styleEl);
+				}
+			}
+			syncContent();
+		}
+		
+		// Listen for custom CSS changes
+		$customCssTextarea.on('input', function() {
+			applyCustomCss();
+		});
+		
+		// Apply initial custom CSS after editor loads
+		editor.on('load', function() {
+			applyCustomCss();
+		});
 
 		editor.on('update', syncContent);
 		editor.on('component:update', syncContent);
