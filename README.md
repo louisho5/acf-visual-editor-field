@@ -2,6 +2,8 @@
 
 A custom [ACF](https://github.com/AdvancedCustomFields/acf) field type that provides a drag-and-drop visual editor inside your WordPress.
 
+![screenshot](screenshot.png)
+
 ## Features
 
 - Drag & drop visual editor powered by [GrapesJS](https://github.com/GrapesJS/grapesjs)
@@ -61,5 +63,6 @@ async function fetchVisualEditorData(postId) {
 // Example usage
 fetchVisualEditorData(123); // Enter your Post ID
 ```
+
 
 
